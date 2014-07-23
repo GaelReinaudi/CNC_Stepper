@@ -9,7 +9,8 @@ int in2Pin = 11;
 int in3Pin = 10;
 int in4Pin = 9;
 
-Stepper motor(512, in1Pin, in2Pin, in3Pin, in4Pin);  
+Stepper motor(200, in1Pin, in2Pin, in3Pin, in4Pin);  
+int speedMotor = 1;
 
 void setup()
 {
@@ -23,14 +24,20 @@ void setup()
   while (!Serial);
   
   Serial.begin(9600);
-  motor.setSpeed(20);
 }
 
 void loop()
 {
+  motor.setSpeed(speedMotor);
+  speedMotor += 1;
   if (Serial.available())
   {
     int steps = Serial.parseInt();
     motor.step(steps);
+  }
+  else
+  {
+    motor.step(10 * speedMotor);
+    //sleep(1000);
   }
 }
